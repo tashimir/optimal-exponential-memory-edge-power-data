@@ -1,0 +1,13 @@
+artifact,check,value,threshold,status
+T1,maximum_high_order_resolution_difference,1.568775445659476e-08,5e-08,pass
+T1,maximum_even_power_exact_error,4.907509065787962e-09,5e-08,pass
+T1,maximum_independent_d1_error,2.4980018054066026e-15,5e-08,pass
+F3,maximum_order18_to_order24_difference,0.0,1e-10,pass
+F3,maximum_root_interval_width,3.469446951953614e-18,1e-12,pass
+F3,maximum_curvature_step_difference,1.2026025508760084e-08,1e-06,pass
+F3,branch_samples_near_endpoint,12.0,12.0,pass
+F3,minimum_endpoint_offset,0.0009999999999994458,0.001001,pass
+F3,closest_normalized_limit_error,9.501731446104333e-05,0.0002,pass
+F4,maximum_branch_relative_width,0.0001999931734657668,0.0002,pass
+F4,fraction_of_theorem_bands_below_one_percent,0.0,1.0,residual_width_disclosed
+F4,maximum_M_to_4M_minimum_change,0.0,1e-06,pass

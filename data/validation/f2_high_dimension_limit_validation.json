@@ -1,0 +1,81 @@
+{
+  "uniform_objective_limit": "(gamma^alpha+(1-gamma)^alpha)*(2/(1+gamma))^(alpha/2)",
+  "adversarial_objective": "(gamma^alpha+(1-gamma)^alpha)*(2/(1+gamma))^alpha",
+  "panels": [
+    {
+      "alpha": 1.5,
+      "gamma_uniform": 0.6546138451253445,
+      "gamma_adversarial": 0.8,
+      "gamma_balanced": 0.7270385002927708,
+      "uniform_minimum": 0.8445546481347886,
+      "adversarial_minimum": 0.9428090415820635,
+      "policies": {
+        "uniform": {
+          "gamma": 0.6546138451253445,
+          "uniform_regret": 0.0,
+          "adversarial_regret": 0.03265207951228666
+        },
+        "balanced": {
+          "gamma": 0.7270385002927708,
+          "uniform_regret": 0.007919702987736033,
+          "adversarial_regret": 0.007919702987736033
+        },
+        "adversarial": {
+          "gamma": 0.8,
+          "uniform_regret": 0.03152050238853854,
+          "adversarial_regret": 0.0
+        }
+      }
+    },
+    {
+      "alpha": 2.0,
+      "gamma_uniform": 0.5811388300841898,
+      "gamma_adversarial": 0.6666666666666666,
+      "gamma_balanced": 0.6227766016837928,
+      "uniform_minimum": 0.6491106406735173,
+      "adversarial_minimum": 0.8000000000000003,
+      "policies": {
+        "uniform": {
+          "gamma": 0.5811388300841898,
+          "uniform_regret": 0.0,
+          "adversarial_regret": 0.02633403898972375
+        },
+        "balanced": {
+          "gamma": 0.6227766016837928,
+          "uniform_regret": 0.006583509747430938,
+          "adversarial_regret": 0.006583509747430938
+        },
+        "adversarial": {
+          "gamma": 0.6666666666666666,
+          "uniform_regret": 0.02704627669472992,
+          "adversarial_regret": 0.0
+        }
+      }
+    },
+    {
+      "alpha": 3.0,
+      "gamma_uniform": 0.5413812634782096,
+      "gamma_adversarial": 0.5857864376269051,
+      "gamma_balanced": 0.5630264396588089,
+      "uniform_minimum": 0.3770975501958641,
+      "adversarial_minimum": 0.545819714368591,
+      "policies": {
+        "uniform": {
+          "gamma": 0.5413812634782096,
+          "uniform_regret": 0.0,
+          "adversarial_regret": 0.021137847945681187
+        },
+        "balanced": {
+          "gamma": 0.5630264396588089,
+          "uniform_regret": 0.005322672995472955,
+          "adversarial_regret": 0.005322672995472955
+        },
+        "adversarial": {
+          "gamma": 0.5857864376269051,
+          "uniform_regret": 0.02192156090493791,
+          "adversarial_regret": 0.0
+        }
+      }
+    }
+  ]
+}

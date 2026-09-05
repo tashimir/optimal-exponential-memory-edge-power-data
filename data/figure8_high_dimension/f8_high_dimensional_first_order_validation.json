@@ -1,0 +1,38 @@
+{
+  "dataset": "figure8_high_dimensional_first_order",
+  "exact_powers": [
+    2,
+    4
+  ],
+  "display_dimensions": [
+    2,
+    5,
+    10,
+    25,
+    100
+  ],
+  "norm_dimensions": [
+    2,
+    3,
+    4,
+    5,
+    7,
+    10,
+    15,
+    20,
+    30,
+    50,
+    75,
+    100,
+    150,
+    200,
+    300,
+    500
+  ],
+  "C2_interval": [
+    0.5,
+    0.9
+  ],
+  "norm_method": "analytic rational derivatives with enumeration of all real critical points in the interval",
+  "maximum_root_polynomial_residual": 0.0
+}

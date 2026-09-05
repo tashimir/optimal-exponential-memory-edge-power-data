@@ -1,0 +1,15 @@
+key,value
+cgal_version,6.1.1-I-900
+cpp_standard,17
+real_type,long double
+long_double_digits,53
+t1_quadrature_orders,96|192|384
+f3_series_orders,12|18|24
+f3_d,2
+f3_alpha_values,13.5|14|14.25|14.5|15
+f3_exact_barrier_coefficient,9.765625000000000000e-04
+f4_alpha_min,4
+f4_alpha_max,1e8
+f4_branch_relative_target,2e-4
+f4_maximum_subdivisions,60000
+cgal_squared_distance_check,1.000000000000000000e+00
