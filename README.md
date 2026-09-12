@@ -2,7 +2,7 @@
 
 Scientific data, figures and reproducible checks for Pedro M. M. de Castro, *Finite-horizon phase transitions in optimal exponential memory for Euclidean connections*. The underlying study is also available in a broader [preprint](https://arxiv.org/abs/2608.27777v2).
 
-Version `v1.1.0` uses descriptive scientific identifiers. Figure numbering can change between article versions without changing these names.
+Version `v1.2.0` uses descriptive scientific identifiers. Figure numbering can change between article versions without changing these names.
 
 ## Figures
 
@@ -12,32 +12,55 @@ Version `v1.1.0` uses descriptive scientific identifiers. Figure numbering can c
 | Joint-window phase diagram | [joint_window_phase_diagram.pdf](figures/joint_window_phase_diagram.pdf) | Analytical diagram derived from the article's results |
 | Finite-horizon phase transitions | [finite_horizon_phase_transitions.pdf](figures/finite_horizon_phase_transitions.pdf) | [finite_horizon_phase_transitions](data/finite_horizon_phase_transitions) |
 | Local objective geometry | [local_objective_geometry.pdf](figures/local_objective_geometry.pdf) | [local_objective_geometry](data/local_objective_geometry) |
+| Measured calibration gains | [measured_calibration_gains.pdf](figures/measured_calibration_gains.pdf) | [measured_calibration_gains](data/measured_calibration_gains) |
 
-[FIGURE_CATALOG.csv](FIGURE_CATALOG.csv) provides the same map in machine-readable form. The four PDF figures retain their full panels and insets. Render the numerical figures from the supplied arrays:
+[FIGURE_CATALOG.csv](FIGURE_CATALOG.csv) provides the same map in machine-readable form. All five PDF figures retain their full panels and insets. Render the numerical figures from the supplied arrays:
 
 ```sh
 python -m pip install -r requirements.txt
 python code/render_figures.py --output reproduced_figures
 ```
 
-Rendering requires LaTeX with Latin Modern fonts and the normal Matplotlib LaTeX dependencies. The two analytical illustrations are supplied as vector PDFs; the rendering command regenerates the two numerical multipanel figures.
+Rendering requires LaTeX with Latin Modern fonts and the normal Matplotlib LaTeX dependencies. The two analytical illustrations are supplied as vector PDFs; the rendering command regenerates all three numerical multipanel figures.
 
 ## Measured calibration gains
 
-[The paired experiment](data/calibration_experiment) compares the convex finite-horizon rule, the analytical stationary scale and an archived numerical reference. It uses independent uniform points in the unit disk, the initial site x_0=p_0, horizons 256, 1024 and 4096, and scaled powers r=0, 0.5, 1 and 2. All twelve scenarios are reported, including negative savings above the threshold. Each scenario has 32,768 independent complete trajectories; policies within a horizon share their inputs.
+[The expanded experiment](data/measured_calibration_gains) compares the finite-horizon scalar rule with the analytical stationary scale for independent uniform points in the unit disk and initial site x_0=p_0. It covers seven horizons from 256 to 1,048,576, 31 scaled powers r from 0 to 3, and six fixed powers from 1.01 to 1.20. The 259 scenarios use 32,768 independent trajectories per horizon. The same inputs evaluate all 74 policies at that horizon, so the scenario estimates within a horizon are dependent. Input sequences are independent across horizons.
 
-- [Results and pointwise 95% intervals](data/calibration_experiment/calibration_results.csv)
-- [Experimental design and seed](data/calibration_experiment/calibration_experiment_design.json)
-- [Complete trajectory costs](data/calibration_experiment/calibration_trajectory_costs.npz)
-- [Experiment program](code/calibration_experiment.py)
+- [Results and pointwise 95% intervals](data/measured_calibration_gains/expanded_calibration_results.csv)
+- [Paired block moments](data/measured_calibration_gains/expanded_calibration_block_moments.csv)
+- [Design, random generator and seed mapping](data/measured_calibration_gains/expanded_calibration_design.json)
+- [Fixed policy parameters](data/measured_calibration_gains/scenarios.csv)
+- [Observed zero-gain brackets](data/measured_calibration_gains/observed_zero_crossing_brackets.json)
 
-Run the experiment with:
+Reconstruct every reported estimate and interval directly from the supplied moments:
 
 ```sh
-python code/calibration_experiment.py --output reproduced_experiment
+python code/calibration_statistics.py --output reproduced_intervals.csv
+python code/plot_calibration_gains.py --data data/measured_calibration_gains/expanded_calibration_results.csv --output reproduced_figures
 ```
 
-Savings are ratios of mean costs, with paired uncertainty estimates. The stationary baseline is an analytical asymptotic scale. The archived reference is a numerical parameter evaluated again on the same simulated inputs. Neither comparison certifies global finite-horizon optimality. The reference is unavailable at horizon 256. The experiment measures costs within the stated stochastic model.
+Savings are 100 times one minus the ratio of mean costs. Positive values favor the finite rule. The stationary baseline is an analytical asymptotic scale, and the comparison does not certify finite-horizon optimality. Intervals are pointwise paired normal delta-method intervals. Fixed-power scenarios assess finite-sample sensitivity and carry no extension of the joint-window theorem. The figure uses a vertical scale that is linear within +/-0.0001% and logarithmic outside. The observed gain-zero brackets are separate from the theoretical scale threshold r=1.
+
+The supplied moments are sufficient to reconstruct all reported means, variances and intervals. Complete trajectory-cost arrays are retained by the author. A full regeneration uses the supplied C++17 kernel and a GNU/Linux OpenMP compiler:
+
+```sh
+python code/reproduce_expanded_calibration.py --output reproduced_trajectories --threads 8
+```
+
+The full experiment is computationally intensive. A small check of the first 128 trajectories at N=256 uses:
+
+```sh
+python code/reproduce_expanded_calibration.py --output small_check --horizons 256 --trajectories 128 --threads 4
+```
+
+This checks only that subset. Completed blocks can be reused after their parameters and checksums are verified. The documented random streams do not depend on the number of threads or block boundaries. Exact bitwise agreement can depend on the compiler and mathematical library. The published parameters are included verbatim; regenerate them independently with:
+
+```sh
+python code/prepare_calibration_parameters.py --benchmarks code --root regenerated_parameters
+```
+
+[A separate twelve-scenario experiment](data/calibration_experiment) additionally compares the rule with an archived numerical finite-horizon parameter. Its complete trajectory costs, reference parameters and program are preserved. Its reference comparisons apply to those twelve scenarios. Run it with `python code/calibration_experiment.py --output reproduced_reference_comparison`.
 
 ## Analytical checks and related datasets
 
@@ -60,6 +83,6 @@ The multidimensional radial-Poisson solver that produced the original finite-siz
 
 The fifty original datasets are unchanged in content. [LEGACY_PATH_MAP.csv](LEGACY_PATH_MAP.csv) maps paths in `v1.0.1-data` to descriptive paths in this version. The earlier tag remains available for exact reproduction of citations to that release.
 
-[CITATION.cff](CITATION.cff) supplies metadata. Cite the associated study and version `v1.1.0`; record the repository commit for an immutable identifier.
+[CITATION.cff](CITATION.cff) supplies metadata. Cite the associated study and version `v1.2.0`; record the repository commit for an immutable identifier.
 
 Copyright 2026 Pedro M. M. de Castro. See [COPYRIGHT.md](COPYRIGHT.md). No open license is granted by this repository.

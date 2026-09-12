@@ -1,6 +1,8 @@
-"""Render the two numerical multipanel figures from the distributed arrays."""
+"""Render the three numerical multipanel figures from the distributed arrays."""
 from pathlib import Path
 import argparse
+import subprocess
+import sys
 import pandas as pd
 import finite_horizon_plot as phase
 import local_objective_plot as profile
@@ -24,7 +26,10 @@ def main():
         raw.groupby(['resolution','lambda_ratio','log2N'])], ignore_index=True)
     norms = pd.read_csv(ROOT/'data/local_objective_geometry/local_objective_geometry_C2_errors.csv')
     profile.make_figure(enriched, norms, args.output)
-    print('Rendered finite_horizon_phase_transitions and local_objective_geometry.')
+    subprocess.run([sys.executable, str(ROOT/'code/plot_calibration_gains.py'),
+        '--data', str(ROOT/'data/measured_calibration_gains/expanded_calibration_results.csv'),
+        '--output', str(args.output)], check=True)
+    print('Rendered the three numerical figures.')
 
 if __name__ == '__main__':
     main()
