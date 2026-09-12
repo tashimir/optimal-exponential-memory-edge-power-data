@@ -1,0 +1,5 @@
+figure_id,title,pdf,data
+geometric_construction,Geometric construction,figures/geometric_construction.pdf,data/geometric_construction
+joint_window_phase_diagram,Joint-window phase diagram,figures/joint_window_phase_diagram.pdf,Analytical diagram
+finite_horizon_phase_transitions,Finite-horizon phase transitions,figures/finite_horizon_phase_transitions.pdf,data/finite_horizon_phase_transitions
+local_objective_geometry,Local objective geometry,figures/local_objective_geometry.pdf,data/local_objective_geometry

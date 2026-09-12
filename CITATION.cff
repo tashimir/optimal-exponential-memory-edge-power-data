@@ -1,13 +1,13 @@
 cff-version: 1.2.0
 message: "If you use these data, please cite this repository and the associated manuscript."
-title: "Numerical data for Optimal exponential memory for sequential Euclidean connections: edge-power costs and phase transitions"
+title: "Data and figures for finite-horizon exponential-memory optimization"
 type: dataset
 authors:
   - family-names: "de Castro"
     given-names: "Pedro M. M."
     orcid: "https://orcid.org/0000-0002-9470-7458"
-version: "1.0.1"
-date-released: 2026-09-05
+version: "1.1.0"
+date-released: 2026-09-12
 repository-artifact: "https://github.com/tashimir/optimal-exponential-memory-edge-power-data"
 keywords:
   - "sequential Euclidean connection"

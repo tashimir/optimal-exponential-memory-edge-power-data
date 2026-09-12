@@ -6,17 +6,17 @@ The [README](README.md) maps each dataset to its article figure or table. The un
 
 The retained-edge factor is h_alpha(gamma)=gamma^alpha+(1-gamma)^alpha. The uniform objective is Phi_(d,alpha)=h_alpha M_(d,alpha). The exact adversarial objective through power three is h_alpha [2/(1+gamma)]^alpha. The balanced policy minimizes the maximum of the two normalized losses.
 
-Figure 6 compares correction *scales*: C_tr=1/(N epsilon_N delta_N^2) and C_stat=delta_N/epsilon_N, with epsilon_N=alpha_N-1. The curve stored as `correction_balance` is log(C_tr/C_stat)/log(N). Coefficients multiplying these scales in the refined theorem are not included in that ratio.
+The finite-horizon phase-transition dataset compares correction *scales*: C_tr=1/(N epsilon_N delta_N^2) and C_stat=delta_N/epsilon_N, with epsilon_N=alpha_N-1. The curve stored as `correction_balance` is log(C_tr/C_stat)/log(N). Coefficients multiplying these scales in the refined theorem are not included in that ratio.
 
-Figure 7 uses the article notation mathcal P_N, A_N and B_N. Their stored column identifiers are `G_N`, `a_w` and `b_w`. Derivatives of the finite objective are evaluated by a degree-18 Chebyshev projection of the Chebyshev-Lobatto samples. The stored `C0`, `C1` and `C2` values are derivative-specific maximum errors on the sample grid, whereas the high-dimensional `C2_norm` takes the maximum over all three derivative orders on the continuous interval.
+The local-objective dataset uses `G_N`, `a_w` and `b_w` for the normalized objective, reciprocal-balance component and entropy component. Older notation mathcal P_N, A_N and B_N refers to the same stored arrays. Derivatives of the finite objective are evaluated by a degree-18 Chebyshev projection of the Chebyshev-Lobatto samples. The stored `C0`, `C1` and `C2` values are derivative-specific maximum errors on the sample grid, whereas the high-dimensional `C2_norm` takes the maximum over all three derivative orders on the continuous interval.
 
-Figure 8 uses exact second- and fourth-moment formulas. Its dashed reference is (38656/2025)/d^2, anchored at d=2 on the alpha=4 differentiated remainder curve. These data contain no sampling error.
+The high-dimensional dataset uses exact second- and fourth-moment formulas. Its dashed reference is (38656/2025)/d^2, anchored at d=2 on the alpha=4 differentiated remainder curve. These data contain no sampling error.
 
-Independent Monte Carlo diagnostics use 32 streams. The approximate 99% half-width uses factor 2.75. The retained-count allowance `effective_total` divides the count by 1.02; it is a diagnostic convention. A Monte Carlo case is accepted after at least two sample-size levels, diagnostic retained count greater than 100000, half-width at most .002 max(1,absolute normalized mean), and between-level change at most .001 max(1,absolute normalized mean). Pseudorandom initialization values are not distributed. Quadrature resolution differences and Monte Carlo intervals are separate evidence types.
+The earlier uniform-adversarial Monte Carlo diagnostics use 32 streams. The approximate 99% half-width uses factor 2.75. The retained-count allowance `effective_total` divides the count by 1.02; it is a diagnostic convention. A Monte Carlo case is accepted after at least two sample-size levels, diagnostic retained count greater than 100000, half-width at most .002 max(1,absolute normalized mean), and between-level change at most .001 max(1,absolute normalized mean). Pseudorandom initialization values are not distributed. Quadrature resolution differences and Monte Carlo intervals are separate evidence types.
 
 ## Column definitions
 
-The following alphabetical dictionary covers every column of the 42 scientific CSV files. `FILE_MANIFEST.csv` provides the exact file-level schemas and row counts. Parameters and validation JSON files retain the same meanings, with array-valued keys listing the tested grids and resolution settings.
+The following alphabetical dictionary covers the columns of the 42 original scientific CSV files. New experiment fields are defined in the calibration section below. `FILE_MANIFEST.csv` provides the exact file-level schemas and row counts. Parameters and validation JSON files retain the same meanings, with array-valued keys listing the tested grids and resolution settings.
 
 | Column | Meaning |
 |---|---|
@@ -28,7 +28,7 @@ The following alphabetical dictionary covers every column of the 42 scientific C
 | `C2_norm` | Maximum over derivative orders 0,1,2 of the supremum absolute remainder on gamma in [.5,.9], after subtracting the leading and first dimension terms. |
 | `C2_resolution_difference` | Maximum absolute second-derivative difference between the two profile resolutions. |
 | `Delta_N` | Lambert moving-window scale delta_N exp(w_N/2), as defined in the article. |
-| `G_N` | Normalized finite objective mathcal P_N(z) in the article. G_N is the CSV column identifier for that same quantity. |
+| `G_N` | Normalized finite objective G_N(z), as defined in the article. |
 | `H` | Geometric accumulated initialization constant H_(d,alpha), evaluated at the row parameters. |
 | `H_N` | Geometric accumulated initialization constant H_(d,alpha), evaluated at the row parameters. |
 | `H_constant` | Geometric accumulated initialization constant H_(d,alpha), evaluated at the row parameters. |
@@ -36,7 +36,7 @@ The following alphabetical dictionary covers every column of the 42 scientific C
 | `H_d_alpha` | Geometric accumulated initialization constant H_(d,alpha), evaluated at the row parameters. |
 | `H_resolution_error` | Absolute difference between the two finest stored quadrature evaluations of H. |
 | `N` | Number of insertions. |
-| `a_w` | Stationary comparison profile A_N(z)=w_N(z+1/z-2)/(2(w_N+1)). |
+| `a_w` | Reciprocal-balance component w_N(z+1/z-2)/(2(w_N+1)); it combines contributions after centering the objective. |
 | `absolute_error` | Absolute difference between value and reference. |
 | `accepted` | Numerical validation flag. Finite-size data require location_rel_change<.0025, value_rel_change<.001, first_order_ok and neighbor_ok; Monte Carlo records use the confidence and stability criteria described above. |
 | `active_derivative_order` | Derivative order attaining C2_norm. |
@@ -55,7 +55,7 @@ The following alphabetical dictionary covers every column of the 42 scientific C
 | `auxiliary_vertex_label` | Label x_i of the auxiliary vertex. |
 | `auxiliary_vertex_x` | First Cartesian coordinate of x_i. |
 | `auxiliary_vertex_y` | Second Cartesian coordinate of x_i. |
-| `b_w` | Transient comparison profile B_N(z)=(z log(z)-z+1)/(w_N+1). |
+| `b_w` | Entropy component (z log(z)-z+1)/(w_N+1), arising from the stationary power expansion. |
 | `balanced_maximum_loss` | Maximum of the two criterion-relative losses at gamma_balanced. |
 | `barrier` | Phi_(2,alpha)(1-delta_mid)-c_(2,alpha). |
 | `barrier_ratio` | barrier/(alpha-14)^2; multiply by 1024 for the normalized barrier plot. |
@@ -212,3 +212,14 @@ The following alphabetical dictionary covers every column of the 42 scientific C
 | `z` | Multiplicative displacement from Delta_N: the tested endpoint distance is Delta_N z. |
 | `z_order` | Number of Chebyshev-Lobatto points in the z grid. |
 | `zero_length` | Indicator that an edge has zero geometric length. |
+
+
+## Paired calibration experiment
+
+`data/calibration_experiment` contains the complete twelve-scenario experiment. `N`, `r`, `alpha`, `H`, and the `delta_*` columns identify fixed policies. `delta_stationary_scale` is the analytical stationary scale, including zero at power one; it is not the exact stationary minimizer. `delta_reference` is a stored numerical finite-horizon parameter from the highest archived resolution. No such reference is available for N=256.
+
+`mean_finite`, `mean_stationary_scale`, and `mean_reference` are sample means of complete-trajectory costs. `saving_estimate_pct` equals 100(1-mean_finite/mean_stationary_scale). `reference_excess_estimate_pct` equals 100(mean_finite/mean_reference-1). The corresponding `standard_error_pct`, `lower95_pct`, and `upper95_pct` fields give paired delta-method uncertainty. Pointwise 95% normal intervals use the estimate plus or minus 1.96 standard errors. Empty reference fields are unavailable quantities.
+
+For trajectory costs A_i and B_i, the standard error of their mean ratio is sd(A_i-(mean(A)/mean(B))B_i)/(sqrt(m)mean(B)). Trajectories are independent; all policies within a horizon share their inputs. The seed and complete design are supplied. Each array `costs_N...` in the NPZ file has shape (policies, trajectories), identified by the matching `policy_r_N...` and `policy_name_N...` arrays. Negative savings are retained.
+
+The `data/analytical_benchmarks` files contain exact-objective, scalar-model and geometric-constant calculations. Their programs and seeds are supplied in `code`. Original numerical records retain their scientific identifiers and values; current descriptive paths are indexed by `LEGACY_PATH_MAP.csv`.

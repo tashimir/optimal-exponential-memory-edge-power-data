@@ -1,0 +1,30 @@
+"""Render the two numerical multipanel figures from the distributed arrays."""
+from pathlib import Path
+import argparse
+import pandas as pd
+import finite_horizon_plot as phase
+import local_objective_plot as profile
+
+ROOT = Path(__file__).resolve().parents[1]
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--output', type=Path, default=ROOT/'reproduced_figures')
+    args = parser.parse_args()
+    args.output.mkdir(parents=True, exist_ok=True)
+    data = pd.concat([pd.read_csv(p) for p in sorted(
+        (ROOT/'data/finite_horizon_phase_transitions').glob('convergence_phase_regimes_shard_*.csv'))], ignore_index=True)
+    data = data.sort_values(['lambda_ratio','log2N'])
+    phase.validate_data(data)
+    phase.make_figure(data, args.output)
+    raw = pd.concat([pd.read_csv(p) for p in sorted(
+        (ROOT/'data/local_objective_geometry').glob('object*profiles_shard_*.csv'))], ignore_index=True)
+    raw = raw.rename(columns={'evaluation_resolution':'resolution'})
+    enriched = pd.concat([profile.enrich_group(g) for _,g in
+        raw.groupby(['resolution','lambda_ratio','log2N'])], ignore_index=True)
+    norms = pd.read_csv(ROOT/'data/local_objective_geometry/local_objective_geometry_C2_errors.csv')
+    profile.make_figure(enriched, norms, args.output)
+    print('Rendered finite_horizon_phase_transitions and local_objective_geometry.')
+
+if __name__ == '__main__':
+    main()

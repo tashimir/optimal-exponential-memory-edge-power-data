@@ -1,38 +1,65 @@
-# Numerical data for optimal exponential memory
+# Data and figures for finite-horizon exponential-memory optimization
 
-Numerical data for Pedro M. M. de Castro, *Optimal exponential memory for sequential Euclidean connections: edge-power costs and phase transitions* (2026), [arXiv:2608.27777v2](https://arxiv.org/abs/2608.27777v2).
+Scientific data, figures and reproducible checks for Pedro M. M. de Castro, *Finite-horizon phase transitions in optimal exponential memory for Euclidean connections*. The underlying study is also available in a broader [preprint](https://arxiv.org/abs/2608.27777v2).
 
-## Figures and tables
+Version `v1.1.0` uses descriptive scientific identifiers. Figure numbering can change between article versions without changing these names.
 
-The following map identifies the data by scientific topic and by figure or table in the article. Dataset paths are stable identifiers.
+## Figures
 
-| Article object | Scientific topic | Data location |
+| Scientific figure | PDF | Data |
 |---|---|---|
-| Figure 1 | Geometric construction | `data/figure1_geometry` |
-| Figure 2 | Analytical joint-window diagram | No numerical dataset |
-| Figure 3 | Uniform and adversarial relative loss | `data/figure2_tradeoff` |
-| Figure 4 | Endpoint bifurcation | `data/figure3_endpoint_bifurcation` |
-| Figure 5 | High-power adversarial bounds | `data/figure4_high_power` |
-| Figure 6 | Finite-size phase transitions | `data/figure6_finite_size` |
-| Figure 7 | Differentiated local objective | `data/figure7_local_objective` |
-| Figure 8 | High-dimensional first correction | `data/figure8_high_dimension` |
-| Table 1 | Robust policy comparison | `data/tables/t2_robustness_cost.csv` |
-| Table 2 | Finite-size constants | `data/tables/t1_dimension_constants.csv` and `t1_sublinear_constants.csv` |
+| Geometric construction | [geometric_construction.pdf](figures/geometric_construction.pdf) | [geometric_construction](data/geometric_construction) |
+| Joint-window phase diagram | [joint_window_phase_diagram.pdf](figures/joint_window_phase_diagram.pdf) | Analytical diagram derived from the article's results |
+| Finite-horizon phase transitions | [finite_horizon_phase_transitions.pdf](figures/finite_horizon_phase_transitions.pdf) | [finite_horizon_phase_transitions](data/finite_horizon_phase_transitions) |
+| Local objective geometry | [local_objective_geometry.pdf](figures/local_objective_geometry.pdf) | [local_objective_geometry](data/local_objective_geometry) |
 
-Additional files in `data/tables` and `data/validation` contain quadrature comparisons, interpolation tests, parameter records and independent Monte Carlo diagnostics. These numerical checks describe the precision and scope of the scientific calculations.
+[FIGURE_CATALOG.csv](FIGURE_CATALOG.csv) provides the same map in machine-readable form. The four PDF figures retain their full panels and insets. Render the numerical figures from the supplied arrays:
 
-## Interpretation and independent use
+```sh
+python -m pip install -r requirements.txt
+python code/render_figures.py --output reproduced_figures
+```
 
-`DATA_DICTIONARY.md` defines the stored columns, parameter conventions and plotted transformations. `FILE_MANIFEST.csv` records the byte size, SHA-256 digest, format, row count and columns of all 50 data files. `SHA256SUMS.txt` checks file integrity across the repository.
+Rendering requires LaTeX with Latin Modern fonts and the normal Matplotlib LaTeX dependencies. The two analytical illustrations are supplied as vector PDFs; the rendering command regenerates the two numerical multipanel figures.
 
-CSV files use a header row and comma delimiters. JSON files are UTF-8 encoded. Column names are case-sensitive: `delta_N` and `Delta_N` denote different analytical scales. Empty fields denote quantities that do not apply to the record. Relative losses are stored as fractions; multiply by 100 to obtain the percentages displayed in the article.
+## Measured calibration gains
 
-The dataset contains evaluated scientific quantities and numerical validation metadata. Exact second- and fourth-moment figures can be reconstructed directly from the article's formulas. Finite-size and nonquadratic stationary evaluations also require an implementation of the numerical method. The author's custom software is available from the author on reasonable request. Independent Monte Carlo checks include sample sizes and stream-level estimates; pseudorandom initialization values are not included.
+[The paired experiment](data/calibration_experiment) compares the convex finite-horizon rule, the analytical stationary scale and an archived numerical reference. It uses independent uniform points in the unit disk, the initial site x_0=p_0, horizons 256, 1024 and 4096, and scaled powers r=0, 0.5, 1 and 2. All twelve scenarios are reported, including negative savings above the threshold. Each scenario has 32,768 independent complete trajectories; policies within a horizon share their inputs.
 
-## Citation
+- [Results and pointwise 95% intervals](data/calibration_experiment/calibration_results.csv)
+- [Experimental design and seed](data/calibration_experiment/calibration_experiment_design.json)
+- [Complete trajectory costs](data/calibration_experiment/calibration_trajectory_costs.npz)
+- [Experiment program](code/calibration_experiment.py)
 
-`CITATION.cff` supplies citation metadata. Cite the associated article and data version `v1.0.1-data`. Record the corresponding repository commit when an analysis requires an immutable data identifier.
+Run the experiment with:
 
-## Rights
+```sh
+python code/calibration_experiment.py --output reproduced_experiment
+```
 
-Copyright 2026 Pedro M. M. de Castro. See `COPYRIGHT.md`. No open license is granted by this repository.
+Savings are ratios of mean costs, with paired uncertainty estimates. The stationary baseline is an analytical asymptotic scale. The archived reference is a numerical parameter evaluated again on the same simulated inputs. Neither comparison certifies global finite-horizon optimality. The reference is unavailable at horizon 256. The experiment measures costs within the stated stochastic model.
+
+## Analytical checks and related datasets
+
+[Analytical benchmarks](data/analytical_benchmarks) cover geometric constants, the exact one-dimensional finite objective, the scalar balance and a separate three-case Monte Carlo cost check. Their programs are `code/analytical_benchmarks.py` and `code/finite_cost_monte_carlo.py`.
+
+Additional datasets from the broader study are organized by topic:
+
+- [Uniform and adversarial tradeoff](data/uniform_adversarial_tradeoff)
+- [Endpoint bifurcation](data/endpoint_bifurcation)
+- [High-power adversarial bounds](data/high_power_adversarial_bounds)
+- [High-dimensional correction](data/high_dimensional_correction)
+- [Dimension constants and policy comparisons](data/tables)
+- [Numerical resolution and sampling diagnostics](data/validation)
+
+The multidimensional radial-Poisson solver that produced the original finite-size arrays is available from the author on reasonable request. The distributed rendering code uses those arrays; the paired Monte Carlo experiment is independently executable.
+
+## Interpretation, integrity and citation
+
+[DATA_DICTIONARY.md](DATA_DICTIONARY.md) defines units, parameters and columns. [FILE_MANIFEST.csv](FILE_MANIFEST.csv) records dataset paths, formats, dimensions and checksums. [SHA256SUMS.txt](SHA256SUMS.txt) covers repository files. CSV files have headers and comma delimiters; JSON is UTF-8; NPZ arrays use NumPy's format. `delta_N` and `Delta_N` identify different analytical scales. Empty reference fields mean unavailable quantities.
+
+The fifty original datasets are unchanged in content. [LEGACY_PATH_MAP.csv](LEGACY_PATH_MAP.csv) maps paths in `v1.0.1-data` to descriptive paths in this version. The earlier tag remains available for exact reproduction of citations to that release.
+
+[CITATION.cff](CITATION.cff) supplies metadata. Cite the associated study and version `v1.1.0`; record the repository commit for an immutable identifier.
+
+Copyright 2026 Pedro M. M. de Castro. See [COPYRIGHT.md](COPYRIGHT.md). No open license is granted by this repository.
