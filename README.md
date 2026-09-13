@@ -2,7 +2,7 @@
 
 Scientific data, figures and reproducible checks for Pedro M. M. de Castro, *Finite-horizon phase transitions in optimal exponential memory for Euclidean connections*. The underlying study is also available in a broader [preprint](https://arxiv.org/abs/2608.27777v2).
 
-Version `v1.2.0` uses descriptive scientific identifiers. Figure numbering can change between article versions without changing these names.
+Version `v1.2.1` uses descriptive scientific identifiers. Figure numbering can change between article versions without changing these names.
 
 ## Figures
 
@@ -40,7 +40,7 @@ python code/calibration_statistics.py --output reproduced_intervals.csv
 python code/plot_calibration_gains.py --data data/measured_calibration_gains/expanded_calibration_results.csv --output reproduced_figures
 ```
 
-Savings are 100 times one minus the ratio of mean costs. Positive values favor the finite rule. The stationary baseline is an analytical asymptotic scale, and the comparison does not certify finite-horizon optimality. Intervals are pointwise paired normal delta-method intervals. Fixed-power scenarios assess finite-sample sensitivity and carry no extension of the joint-window theorem. The figure uses a vertical scale that is linear within +/-0.0001% and logarithmic outside. The observed gain-zero brackets are separate from the theoretical scale threshold r=1.
+Savings are 100 times one minus the ratio of mean costs. Positive values favor the finite rule. The stationary baseline is an analytical asymptotic scale, and the comparison does not certify finite-horizon optimality. Intervals are pointwise paired normal delta-method intervals. Fixed-power scenarios assess finite-sample sensitivity and carry no extension of the joint-window theorem. The figure shows all 217 joint-window cases and 42 fixed-power cases on a common linear saving scale. A separate logarithmic panel replots all 91 negative estimates as positive cost increases. Circles identify joint-window cases and triangles fixed-power cases. Its orange line joins the largest observed increase among the 37 scenarios at each horizon; this is a maximum over the sampled grid. Shading in the saving panels and bars in the loss panel represent the same pointwise intervals. The smallest and largest horizons are emphasized, with the other five in gray; the fixed powers 1.01 and 1.03 are emphasized, with the other four in gray. The observed gain-zero brackets are separate from the theoretical scale threshold r=1.
 
 The supplied moments are sufficient to reconstruct all reported means, variances and intervals. Complete trajectory-cost arrays are retained by the author. A full regeneration uses the supplied C++17 kernel and a GNU/Linux OpenMP compiler:
 
@@ -83,6 +83,6 @@ The multidimensional radial-Poisson solver that produced the original finite-siz
 
 The fifty original datasets are unchanged in content. [LEGACY_PATH_MAP.csv](LEGACY_PATH_MAP.csv) maps paths in `v1.0.1-data` to descriptive paths in this version. The earlier tag remains available for exact reproduction of citations to that release.
 
-[CITATION.cff](CITATION.cff) supplies metadata. Cite the associated study and version `v1.2.0`; record the repository commit for an immutable identifier.
+[CITATION.cff](CITATION.cff) supplies metadata. Cite the associated study and version `v1.2.1`; record the repository commit for an immutable identifier.
 
 Copyright 2026 Pedro M. M. de Castro. See [COPYRIGHT.md](COPYRIGHT.md). No open license is granted by this repository.
