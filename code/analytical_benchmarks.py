@@ -1,11 +1,4 @@
-#!/usr/bin/env python3
-"""Analytical benchmarks for finite-horizon exponential memory.
-
-These checks do not regenerate the author's multidimensional Markov/Poisson
-campaign and do not certify all manuscript proofs.  They check explicit algebra,
-an independent integral representation, the convex scalar model, and an exact
-one-dimensional finite objective. No network access is required.
-"""
+# Compute symbolic identities, initialization constants and scalar-model benchmarks.
 from __future__ import annotations
 import csv
 import json
@@ -52,10 +45,8 @@ def symbolic_checks() -> dict[str, bool]:
     return tests
 
 def H_numeric(d: int, alpha: float = 1.0) -> float:
-    """Independent radial-potential representation via Gauss hypergeometric.
-    g(r)=d/(d+alpha)*2F1(-alpha/2,-(d+alpha)/2;d/2;r^2).
-    A local series avoids cancellation in g(r)-g(0).
-    """
+
+
     if d < 1 or alpha <= 0:
         raise ValueError('d >= 1 and alpha > 0 required')
     c = d/(d+alpha)
@@ -86,7 +77,7 @@ def dimension_checks() -> list[dict]:
     return rows
 
 def finite_1d_excess(delta: mp.mpf, N: int) -> mp.mpf:
-    """F_(1,1,N)(1-delta) - N/2; stable away from either endpoint."""
+
     if not 0 < delta < 1:
         raise ValueError('0 < delta < 1 required')
     tail = -mp.expm1(2*N*mp.log1p(-delta))
@@ -100,7 +91,7 @@ def exact_finite_checks() -> list[dict]:
         slope=mp.diff(lambda x:finite_1d_excess(x,N),root)
         curvature=mp.diff(lambda x:finite_1d_excess(x,N),root,2)
         assert 0 < root < 1 and abs(slope)<mp.mpf('1e-65') and curvature>0
-        # Comparison against a log-spaced grid is diagnostic, not certification.
+
         grid=[mp.exp(mp.log(mp.mpf('0.0000001'))*(1-mp.mpf(j)/299)) for j in range(299)]
         value=finite_1d_excess(root,N)
         assert min(finite_1d_excess(x,N) for x in grid) >= value-mp.mpf('1e-60')
@@ -110,10 +101,8 @@ def exact_finite_checks() -> list[dict]:
     return rows
 
 def critical_scalar_checks() -> list[dict]:
-    """Compare the exact strictly convex approximation J with its Lambert scale.
-    The scalar root is solved in log(u), u=log(delta/delta_N), preventing
-    underflow even when the Lambert correction tends to zero.
-    """
+
+
     d=2; la=2*mp.log(mp.mpf(16)/13)
     rows=[]
     for L in [64,256,1024,4096]:
@@ -143,7 +132,7 @@ def critical_scalar_checks() -> list[dict]:
     return rows
 
 def main() -> None:
-    result={'scope':'Algebra, explicit integral constants, exact d=1 alpha=1 objective, and convex-model checks. Not a certification of all proofs or a rerun of the multidimensional numerical campaign.',
+    result={'scope':'Symbolic identities, initialization constants, the exact one-dimensional finite objective at power one, and roots of the scalar critical model.',
             'symbolic':symbolic_checks(),'dimension_constants':dimension_checks(),
             'exact_1d_finite':exact_finite_checks(),'critical_scalar_model':critical_scalar_checks()}
     (HERE/'check_results.json').write_text(json.dumps(result,indent=2),encoding='utf-8')

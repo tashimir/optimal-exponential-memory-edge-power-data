@@ -1,5 +1,4 @@
-// Paired Euclidean connection costs for prespecified exponential memories.
-// Pedro M. M. de Castro, pmmc@cin.ufpe.br.
+// Simulate retained-edge costs for fixed memory policies on uniform disk trajectories.
 #include <algorithm>
 #include <cmath>
 #include <csignal>

@@ -1,8 +1,4 @@
-"""Reproduce paired trajectories with a C++17/OpenMP compiler on GNU/Linux.
-
-Existing blocks are reused only after their parameters and checksum are verified.
-The full design is the default; --horizons and --trajectories support small checks.
-"""
+# Regenerate the expanded paired-trajectory experiment and its summary statistics.
 import argparse
 from array import array
 import csv
@@ -21,7 +17,7 @@ def digest(path):
 
 def main():
     root = Path(__file__).resolve().parents[1]
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = argparse.ArgumentParser(description='Regenerate the expanded paired-trajectory experiment and its summary statistics.')
     parser.add_argument('--data', type=Path, default=root / 'data/measured_calibration_gains')
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--threads', type=int, default=min(8, os.cpu_count() or 1))

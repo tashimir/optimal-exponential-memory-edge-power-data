@@ -1,3 +1,4 @@
+# Render the finite-horizon phase diagram from stored numerical arrays.
 import argparse
 import hashlib
 import itertools

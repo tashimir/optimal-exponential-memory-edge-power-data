@@ -1,4 +1,4 @@
-"""Render the three numerical multipanel figures from the distributed arrays."""
+# Reproduce the three numerical figures from the distributed datasets.
 from pathlib import Path
 import argparse
 import subprocess
@@ -10,7 +10,7 @@ import local_objective_plot as profile
 ROOT = Path(__file__).resolve().parents[1]
 
 def main():
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = argparse.ArgumentParser(description='Reproduce the three numerical figures from the distributed datasets.')
     parser.add_argument('--output', type=Path, default=ROOT/'reproduced_figures')
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=True)

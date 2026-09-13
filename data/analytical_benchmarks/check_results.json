@@ -1,5 +1,5 @@
 {
-  "scope": "Algebra, explicit integral constants, exact d=1 alpha=1 objective, and convex-model checks. Not a certification of all proofs or a rerun of the multidimensional numerical campaign.",
+  "scope": "Symbolic identities, initialization constants, the exact one-dimensional finite objective at power one, and roots of the scalar critical model.",
   "symbolic": {
     "coefficient_l2": true,
     "coefficient_first_derivative_l2": true,

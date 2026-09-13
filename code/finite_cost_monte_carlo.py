@@ -1,10 +1,4 @@
-"""Finite-horizon phase transitions in optimal exponential memory for Euclidean connections.
-
-Pedro M. M. de Castro, pmmc@cin.ufpe.br.
-Independent Monte Carlo estimates of retained-edge costs in the unit disk.
-Cases are fixed parameters from data version v1.0.1-data. Common random inputs
-are used across cases; trajectories within each case are independent.
-"""
+# Estimate retained-edge costs at three fixed parameters using independent trajectories.
 from pathlib import Path
 import csv
 import json

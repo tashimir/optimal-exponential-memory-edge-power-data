@@ -1,3 +1,4 @@
+# Define the typography, colors and layout shared by the scientific figures.
 import hashlib
 import shutil
 import matplotlib as mpl

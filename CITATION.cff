@@ -6,8 +6,8 @@ authors:
   - family-names: "de Castro"
     given-names: "Pedro M. M."
     orcid: "https://orcid.org/0000-0002-9470-7458"
-version: "1.2.1"
-date-released: 2026-09-12
+version: "1.2.2"
+date-released: 2026-09-13
 repository-artifact: "https://github.com/tashimir/optimal-exponential-memory-edge-power-data"
 keywords:
   - "sequential Euclidean connection"

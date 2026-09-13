@@ -1,9 +1,4 @@
-"""Paired finite-horizon memory-calibration experiment in the unit disk.
-
-Pedro M. M. de Castro, pmmc@cin.ufpe.br.
-All policies are fixed before simulation. Costs are aggregated by independent
-complete trajectories. Pointwise intervals describe Monte Carlo uncertainty.
-"""
+# Compare finite, stationary-scale and reference policies on paired disk trajectories.
 from pathlib import Path
 import argparse
 import csv
@@ -36,7 +31,7 @@ def scalar_rule(N, alpha):
 
 
 def relative_comparison(A, B, saving=True):
-    """Ratio of means, with a paired influence-function standard error."""
+
     ratio = A.mean() / B.mean()
     se = (A - ratio * B).std(ddof=1) / (np.sqrt(len(A)) * B.mean())
     estimate = 1 - ratio if saving else ratio - 1
@@ -45,7 +40,7 @@ def relative_comparison(A, B, saving=True):
 
 
 def main():
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = argparse.ArgumentParser(description='Compare finite, stationary-scale and reference policies on paired disk trajectories.')
     parser.add_argument('--references', type=Path, default=HERE/'calibration_reference_parameters.csv')
     parser.add_argument('--output', type=Path, default=HERE)
     args = parser.parse_args()

@@ -1,8 +1,10 @@
 # Data and figures for finite-horizon exponential-memory optimization
 
-Scientific data, figures and reproducible checks for Pedro M. M. de Castro, *Finite-horizon phase transitions in optimal exponential memory for Euclidean connections*. The underlying study is also available in a broader [preprint](https://arxiv.org/abs/2608.27777v2).
+Scientific data, figures and reproducible checks for Pedro M. M. de Castro, *Finite-horizon phase transitions in optimal exponential memory for Euclidean connections*. An earlier version of the present study is [arXiv:2608.27777v2](https://arxiv.org/abs/2608.27777v2).
 
-Version `v1.2.1` uses descriptive scientific identifiers. Figure numbering can change between article versions without changing these names.
+Version `v1.2.2` provides the figures, data and programs accompanying the finite-horizon study. Scientific names identify the figures and their datasets.
+
+[Online Resource 1](OnlineResource1.zip) is the supplementary package supplied with the article. Its [data dictionary](FINITE_HORIZON_DATA_DICTIONARY.md) explains every included file, parameter and reported statistic.
 
 ## Figures
 
@@ -14,14 +16,14 @@ Version `v1.2.1` uses descriptive scientific identifiers. Figure numbering can c
 | Local objective geometry | [local_objective_geometry.pdf](figures/local_objective_geometry.pdf) | [local_objective_geometry](data/local_objective_geometry) |
 | Measured calibration gains | [measured_calibration_gains.pdf](figures/measured_calibration_gains.pdf) | [measured_calibration_gains](data/measured_calibration_gains) |
 
-[FIGURE_CATALOG.csv](FIGURE_CATALOG.csv) provides the same map in machine-readable form. All five PDF figures retain their full panels and insets. Render the numerical figures from the supplied arrays:
+[FIGURE_CATALOG.csv](FIGURE_CATALOG.csv) provides the same map in machine-readable form. The five figures are supplied as vector PDFs with their magnified details. Render the numerical figures from the supplied arrays:
 
 ```sh
 python -m pip install -r requirements.txt
 python code/render_figures.py --output reproduced_figures
 ```
 
-Rendering requires LaTeX with Latin Modern fonts and the normal Matplotlib LaTeX dependencies. The two analytical illustrations are supplied as vector PDFs; the rendering command regenerates all three numerical multipanel figures.
+Rendering requires LaTeX with Latin Modern fonts and the normal Matplotlib LaTeX dependencies. The two analytical illustrations are supplied as vector PDFs; the rendering command regenerates all three numerical figures.
 
 ## Measured calibration gains
 
@@ -40,7 +42,7 @@ python code/calibration_statistics.py --output reproduced_intervals.csv
 python code/plot_calibration_gains.py --data data/measured_calibration_gains/expanded_calibration_results.csv --output reproduced_figures
 ```
 
-Savings are 100 times one minus the ratio of mean costs. Positive values favor the finite rule. The stationary baseline is an analytical asymptotic scale, and the comparison does not certify finite-horizon optimality. Intervals are pointwise paired normal delta-method intervals. Fixed-power scenarios assess finite-sample sensitivity and carry no extension of the joint-window theorem. The figure shows all 217 joint-window cases and 42 fixed-power cases on a common linear saving scale. A separate logarithmic panel replots all 91 negative estimates as positive cost increases. Circles identify joint-window cases and triangles fixed-power cases. Its orange line joins the largest observed increase among the 37 scenarios at each horizon; this is a maximum over the sampled grid. Shading in the saving panels and bars in the loss panel represent the same pointwise intervals. The smallest and largest horizons are emphasized, with the other five in gray; the fixed powers 1.01 and 1.03 are emphasized, with the other four in gray. The observed gain-zero brackets are separate from the theoretical scale threshold r=1.
+Savings are 100 times one minus the ratio of mean costs. Positive values favor the finite rule. The stationary baseline is an analytical asymptotic scale. Pointwise paired normal delta-method intervals describe sampling uncertainty. In (a), the figure shows the 189 joint-window cases with r <= 2, with a circular magnification of the segment intersections near r = 0.5. The 28 cases with r > 2 remain in the data. In (b), the same linear saving scale shows all 42 fixed-power cases. In (c), all 91 negative estimates appear as positive percentage cost increases on a logarithmic axis, including those with r > 2. Circles identify joint-window cases and triangles fixed-power cases. The highlighted curve joins the largest observed increase among the 37 scenarios at each horizon. Shading in (a) and (b) and bars in (c) represent the same pointwise intervals. The smallest and largest horizons are highlighted in (a), and powers 1.01 and 1.03 are highlighted in (b). The observed gain-zero brackets describe the sampled grid. Fixed-power scenarios provide finite-sample sensitivity evidence.
 
 The supplied moments are sufficient to reconstruct all reported means, variances and intervals. Complete trajectory-cost arrays are retained by the author. A full regeneration uses the supplied C++17 kernel and a GNU/Linux OpenMP compiler:
 
@@ -83,6 +85,6 @@ The multidimensional radial-Poisson solver that produced the original finite-siz
 
 The fifty original datasets are unchanged in content. [LEGACY_PATH_MAP.csv](LEGACY_PATH_MAP.csv) maps paths in `v1.0.1-data` to descriptive paths in this version. The earlier tag remains available for exact reproduction of citations to that release.
 
-[CITATION.cff](CITATION.cff) supplies metadata. Cite the associated study and version `v1.2.1`; record the repository commit for an immutable identifier.
+[CITATION.cff](CITATION.cff) supplies metadata. Cite the associated study and version `v1.2.2`; record the repository commit for an immutable identifier.
 
 Copyright 2026 Pedro M. M. de Castro. See [COPYRIGHT.md](COPYRIGHT.md). No open license is granted by this repository.

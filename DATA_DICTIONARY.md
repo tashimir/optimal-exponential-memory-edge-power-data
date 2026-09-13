@@ -1,6 +1,6 @@
 # Data dictionary
 
-The [README](README.md) maps each dataset to its article figure or table. The unit ball has radius one; lengths, costs and all scaling quantities are expressed in these normalized units. `log` denotes the natural logarithm. Relative losses are fractions, and figures/tables multiply them by 100 to display percentages. Flags are 1 for true and 0 for false unless a textual result is stored.
+The [finite-horizon data dictionary](FINITE_HORIZON_DATA_DICTIONARY.md) describes the supplementary package in full. The [README](README.md) maps each dataset to its article figure or table. The unit ball has radius one; lengths, costs and all scaling quantities are expressed in these normalized units. `log` denotes the natural logarithm. Relative losses are fractions, and figures/tables multiply them by 100 to display percentages. Flags are 1 for true and 0 for false unless a textual result is stored.
 
 ## Mathematical and numerical conventions
 
@@ -216,22 +216,39 @@ The following alphabetical dictionary covers the columns of the 42 original scie
 
 ## Paired calibration experiment
 
-`data/calibration_experiment` contains the complete twelve-scenario experiment. `N`, `r`, `alpha`, `H`, and the `delta_*` columns identify fixed policies. `delta_stationary_scale` is the analytical stationary scale, including zero at power one; it is not the exact stationary minimizer. `delta_reference` is a stored numerical finite-horizon parameter from the highest archived resolution. No such reference is available for N=256.
+The twelve scenarios combine N = 256, 1024, 4096 with r = 0, 0.5, 1, 2. Parameters are fixed before simulation. Each horizon uses 32,768 independent input sequences shared by all its policies. Horizon streams are independent. The archived numerical reference is available for N = 1024 and 4096; its fields are empty for N = 256.
 
-`mean_finite`, `mean_stationary_scale`, and `mean_reference` are sample means of complete-trajectory costs. `saving_estimate_pct` equals 100(1-mean_finite/mean_stationary_scale). `reference_excess_estimate_pct` equals 100(mean_finite/mean_reference-1). The corresponding `standard_error_pct`, `lower95_pct`, and `upper95_pct` fields give paired delta-method uncertainty. Pointwise 95% normal intervals use the estimate plus or minus 1.96 standard errors. Empty reference fields are unavailable quantities.
+Write A_i, B_i and R_i for the finite-rule, stationary-scale and reference costs on trajectory i. The fields `mean_finite`, `mean_stationary_scale` and `mean_reference` are their sample means. `saving_estimate_pct` equals 100[1-mean(A)/mean(B)]. `reference_excess_estimate_pct` equals 100[mean(A)/mean(R)-1].
 
-For trajectory costs A_i and B_i, the standard error of their mean ratio is sd(A_i-(mean(A)/mean(B))B_i)/(sqrt(m)mean(B)). Trajectories are independent; all policies within a horizon share their inputs. The seed and complete design are supplied. Each array `costs_N...` in the NPZ file has shape (policies, trajectories), identified by the matching `policy_r_N...` and `policy_name_N...` arrays. Negative savings are retained.
+For paired costs X_i and Y_i and m independent trajectories, the estimated standard error of mean(X)/mean(Y) is sd[X_i-(mean(X)/mean(Y))Y_i]/[sqrt(m) mean(Y)], with sample standard deviation. The fields `saving_standard_error_pct` and `reference_excess_standard_error_pct` multiply this ratio standard error by 100. The corresponding `lower95_pct` and `upper95_pct` fields use the estimate minus and plus 1.96 standard errors.
 
-The `data/analytical_benchmarks` files contain exact-objective, scalar-model and geometric-constant calculations. Their programs and seeds are supplied in `code`. Original numerical records retain their scientific identifiers and values; current descriptive paths are indexed by `LEGACY_PATH_MAP.csv`.
+In `calibration_trajectory_costs.npz`, every `costs_N...` array has shape (policies, trajectories). `policy_r_N...` and `policy_name_N...` identify its rows. There are 8 policies at N = 256 and 12 at each of the other two horizons. These arrays contain all complete-trajectory costs for this twelve-scenario experiment.
 
-## Expanded calibration experiment
+## Expanded experiment and moment reconstruction
 
-`data/measured_calibration_gains` contains 259 scenarios. `family` is `scaled_r` for the joint-window path or `fixed_alpha` for a fixed-power sensitivity scenario; `case` gives the corresponding value. `N`, `r`, `alpha`, `H`, `delta_finite` and `delta_stationary_scale` specify the design and fixed policies. `case_index`, `finite_column` and `stationary_column` are zero-based indices. Each `policies_N*.tsv` is a headerless two-column table of alpha and delta in kernel output order.
+The expanded design has 31 joint-window r values and six fixed alpha values at seven horizons, for 259 scenarios in total. It uses 32,768 independent trajectories per horizon and 229,376 distinct input sequences overall. All 74 policies within a horizon share the same inputs. The full expanded trajectory arrays are retained by the author; the supplied moments reconstruct every reported estimate and interval, and the programs regenerate the trajectories.
 
-`expanded_calibration_results.csv` contains complete-trajectory statistics. Write A for finite-rule cost, B for stationary-scale cost and D=A-B. `mean_difference` is mean(D); `variance_difference` and `variance_stationary_scale` are unbiased sample variances of D and B; `covariance_difference_stationary_scale` is their unbiased sample covariance. The saving estimate is -100 mean(D)/mean(B). Its paired standard error is 100 sd(D-(mean(D)/mean(B))B)/(sqrt(m)mean(B)). The `saving_lower95_pct` and `saving_upper95_pct` columns use estimate +/-1.96 standard errors. Units for estimates, standard errors and limits are percentage points. `saved_cost_per_input` is -mean(D)/N; `N_delta_*` gives N times the respective update fraction.
+Write A for finite-rule cost, B for stationary-scale cost and D = A - B. The expanded results use the following fields.
 
-`expanded_calibration_block_moments.csv` contains the same moment definitions for each of 256 nonoverlapping blocks of 128 trajectories per scenario, totaling 66,304 rows. `start` is the zero-based trajectory index and `count` is the block size. `trajectories` repeats that block count. Pooling requires both within-block and between-block contributions to variances and covariance. Averaging block ratios or block standard errors does not reconstruct the full-sample statistic; `code/calibration_statistics.py` implements the pooled calculation.
+| Field | Meaning |
+|---|---|
+| `mean_finite`, `mean_stationary_scale` | Sample means of A and B. |
+| `mean_difference` | Sample mean of D. |
+| `variance_difference`, `variance_stationary_scale` | Unbiased sample variances of D and B. |
+| `covariance_difference_stationary_scale` | Unbiased sample covariance of D and B. |
+| `saving_estimate_pct` | -100 mean(D)/mean(B). |
+| `saving_standard_error_pct` | 100 sd[D-(mean(D)/mean(B))B]/[sqrt(m) mean(B)]. |
+| `saving_lower95_pct`, `saving_upper95_pct` | Estimate minus and plus 1.96 standard errors. |
+| `saved_cost_per_input` | -mean(D)/N. |
 
-Every scenario at a given horizon uses the same 32,768 input sequences. There are 229,376 distinct input sequences over the seven horizons, with the seed mapping and generator stated in the design JSON. The normal delta-method intervals are pointwise. The zero-gain bracket JSON records adjacent sampled r values of opposite estimated sign and their intervals. It gives no simultaneous confidence interval or certified threshold for a continuous zero boundary.
+Each scenario is divided into 256 nonoverlapping blocks of 128 trajectories, giving 66,304 moment rows. In the block file, `trajectories` and `count` both refer to the block size. Pooling variances and covariance requires within-block and between-block contributions. `code/calibration_statistics.py` implements that calculation and checks the reconstructed estimates against the full-sample table. Averages of block ratios do not reproduce the full-sample ratio.
 
-The named figure `measured_calibration_gains` shows the same saving estimates on common linear axes in panels (a,b). Panel (c) contains the 91 negative cases, displaying `-saving_estimate_pct` as a positive percentage cost increase. The interval endpoints there are `-saving_upper95_pct` and `-saving_lower95_pct`. Circles denote `scaled_r` and triangles `fixed_alpha`. The highlighted curve takes the largest point estimate of the increase among the 37 scenarios at each horizon, and has no simultaneous confidence interpretation. All 259 source records are retained.
+The design JSON specifies the C++17 `std::mt19937_64` generator, the conversion to uniform values and the seed mapping for each horizon and trajectory. It also records the fixed grids and numerical settings. The `seed_vector_sha256` value identifies the vector of distinct trajectory seeds. It is a reproducibility checksum.
+
+## Reading the measured-gain figure
+
+The named figure `measured_calibration_gains` uses the same linear saving scale in Fig. 5(a) and Fig. 5(b). Fig. 5(a) displays the 189 joint-window cases with r <= 2 and magnifies intersections of the plotted segments near r = 0.5. All 217 joint-window cases, including the 28 with r > 2, remain in the source data. Fig. 5(b) shows the 42 fixed-power cases. Segments connect sampled estimates and introduce no additional observations.
+
+Fig. 5(c) displays all 91 negative estimates as positive percentage cost increases on a logarithmic axis, including those with r > 2. Its interval endpoints are `-saving_upper95_pct` and `-saving_lower95_pct`. Circles denote joint-window cases and triangles denote fixed-power cases. The highlighted curve selects the largest observed point estimate of cost increase among the 37 scenarios at each horizon. This selection has no simultaneous confidence interpretation.
+
+The zero-crossing JSON gives `r_left` and `r_right`, the adjacent sampled values of opposite estimated sign, with their respective `saving_pct`, `lower95_pct` and `upper95_pct` fields prefixed by `left_` or `right_`. These empirical brackets locate observed sign changes on the sampled grid. They do not certify a continuous zero boundary. Fixed-power comparisons provide finite-sample sensitivity evidence within the tested model.

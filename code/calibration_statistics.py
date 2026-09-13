@@ -1,4 +1,4 @@
-"""Paired cost statistics and reconstruction from nonoverlapping block moments."""
+# Reconstruct paired cost estimates and confidence intervals from trajectory moments.
 import argparse
 import math
 from pathlib import Path
@@ -74,7 +74,7 @@ def main():
     import numpy as np
     import pandas as pd
     root = Path(__file__).resolve().parents[1]
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = argparse.ArgumentParser(description='Reconstruct paired cost estimates and confidence intervals from trajectory moments.')
     parser.add_argument('--data', type=Path, default=root / 'data/measured_calibration_gains')
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()

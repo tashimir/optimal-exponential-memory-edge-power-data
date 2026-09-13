@@ -1,3 +1,4 @@
+# Render normalized local-objective profiles and their derivative errors.
 import argparse
 import json
 from pathlib import Path

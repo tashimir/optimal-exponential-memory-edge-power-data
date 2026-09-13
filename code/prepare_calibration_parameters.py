@@ -1,4 +1,4 @@
-"""Prespecified grid, finite-balance roots, and independent replay inputs."""
+# Generate experiment grids, policy parameters and reproducible validation inputs.
 import argparse
 import csv
 import hashlib
@@ -10,7 +10,7 @@ from scipy.optimize import brentq
 
 
 def main():
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = argparse.ArgumentParser(description='Generate experiment grids, policy parameters and reproducible validation inputs.')
     parser.add_argument('--benchmarks', type=Path, required=True)
     parser.add_argument('--root', type=Path, required=True)
     args = parser.parse_args()
@@ -47,7 +47,7 @@ def main():
                 v = brentq(balance, np.nextafter(lower, np.inf), 0.0, xtol=1e-13, rtol=1e-14)
                 finite = np.exp(v)
             assert 0 < finite < 1 and 0 <= stationary < finite
-            # Independent high-precision evaluation of the original balance.
+
             a, dd, hh = mp.mpf(float(alpha)), mp.mpf(float(finite)), mp.mpf(float(H))
             residual = abs((N*a*(2/(2+a))*(dd**(a-1)-(14-a)/16)*dd**2-hh/2)/(hh/2))
             residuals.append(float(residual))
@@ -88,7 +88,7 @@ def main():
         additional_measures=['Absolute saved cost per input', 'N*delta_stationary_scale', 'N*delta_finite'],
         no_simultaneous_coverage_claim=True, balance_max_relative_residual=max(residuals))
     (target/'design.json').write_text(json.dumps(design, indent=2)+'\n', encoding='utf-8', newline='\n')
-    # Validation costs use two explicit retained edges, independently of the factorized kernel.
+
     rng = np.random.default_rng(3019202609)
     u = rng.random((19, 258, 2))
     radius, angle = np.sqrt(u[:,:,0]), 2*np.pi*u[:,:,1]
